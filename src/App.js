@@ -1,6 +1,6 @@
 import './App.css';
 import app from './firebase.init';
-import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { FacebookAuthProvider, getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { useState } from 'react';
 
 const auth = getAuth(app);
@@ -10,6 +10,7 @@ function App() {
 
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
 
   const handleGoogleSignIn = () => {
     signInWithPopup(auth, googleProvider)
@@ -21,6 +22,19 @@ function App() {
       .catch(error => {
         console.log('error', error);
       })
+  }
+
+
+  const handleFacebookSignIn = () => {
+    signInWithPopup(auth, facebookProvider)
+    .then(result => {
+      const user = result.user;
+      setUser(user);
+      console.log(user);
+    })
+    .catch(error => {
+      console.log(error);
+    })
   }
 
   const handleSignOut = () => {
@@ -51,6 +65,7 @@ function App() {
         user.email ? <button onClick={handleSignOut}>Sign Out</button> :
           <>
             <button onClick={handleGoogleSignIn}>Google Sign In</button>
+            <button onClick={handleFacebookSignIn}>Facebook Sign In</button>
             <button onClick={handlegithubSignIn}>Github Sign In</button>
           </>
       }
